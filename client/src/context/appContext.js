@@ -13,6 +13,7 @@ import {
   CREATE_COMMENT_SUCCESS,
   CREATE_COMMENT_ERROR,
   DELETE_COMMENT_ERROR,
+  DELETE_COMMENT_SUCCESS,
   FETCH_SINGLE_COMMENT_SUCCESS,
   FETCH_SINGLE_COMMENT_ERROR,
   EDIT_COMMENT_SUCCESS,
@@ -37,7 +38,8 @@ const initialState = {
     currentPage: 1,
     pageCount: 1,
 
-  }
+  },
+  showMsg:false
 }
 const AppContext = React.createContext()
 
@@ -127,19 +129,23 @@ const AppProvider = ({ children }) => {
       })
 
       dispatch({ type: CREATE_COMMENT_SUCCESS, payload: data.comment })
+      
     } catch (error) {
       dispatch({ type: CREATE_COMMENT_ERROR })
     }
   }
   const deleteComment = async (commentId) => {
+    if (window.confirm("Are you sure you want to delete this comment?") == true) {
     setLoadingForTable()
     try {
       await axios.delete(`/comments/${commentId}`)
-
+      dispatch({ type: DELETE_COMMENT_SUCCESS})
+      
       fetchComment()
     } catch (error) {
       dispatch({ type: DELETE_COMMENT_ERROR , payload: error.response.data.msg})
     }
+  }
   }
 
   const fetchSingleComment = async (commentId) => {
@@ -194,6 +200,7 @@ const AppProvider = ({ children }) => {
 
   const handlePageClick = async (e) => {
     // page.currentPage = e.selected +1;
+    await setLoadingForTable()
     await dispatch({ type: PAGE_CLICK,payload: e.selected +1 })
     await fetchComment()
   }

@@ -18,10 +18,6 @@ const Comments = () => {
      filter,
      fetchComment
     } = useGlobalContext();
-  if (isLoading) {
-    //  return <div className='loading'></div>;
-  }
-
   if (comments.length < 1) {
     return (
       <EmptyContainer>
@@ -57,6 +53,13 @@ const Comments = () => {
 
       <CommentColumns />
       <Container>
+      {isLoadingForTable&& (
+        <div class="d-flex justify-content-center">
+          <div class="spinner-grow" role="status">
+          <span class="sr-only">...</span>
+        </div>
+        </div>
+        )}
         {comments.map((item) => {
           const { _id: id, comment, likes, dislikes, createdAt } = item;
           let date = moment(createdAt);

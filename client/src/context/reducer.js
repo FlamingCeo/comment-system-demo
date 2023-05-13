@@ -15,7 +15,8 @@ import {
   EDIT_COMMENT_ERROR,
   EDIT_COMMENT_SUCCESS,
   PAGE_CLICK,
-  SET_FILTER
+  SET_FILTER,
+  DELETE_COMMENT_SUCCESS
   
 } from './actions'
 
@@ -30,15 +31,17 @@ const reducer = (state, action) => {
   }
 
   if (action.type === SET_LOADING_FOR_TABLE) {
-    return { ...state, isLoadingForTable: false, showAlert: false, editComplete: false }
+    return { ...state, isLoadingForTable: true, showAlert: false, editComplete: false }
 
   }
+
 
   if (action.type === REGISTER_USER_SUCCESS) {
     return {
       ...state,
       isLoading: false,
       user: action.payload,
+      userId: action.payload.id
     }
   }
   if (action.type === REGISTER_USER_ERROR) {
@@ -61,6 +64,7 @@ const reducer = (state, action) => {
       comments: [],
       isEditing: false,
       editItem: null,
+      userId:null
     }
   }
 
@@ -83,10 +87,14 @@ const reducer = (state, action) => {
     return { ...state, isLoading: false }
   }
   if (action.type === CREATE_COMMENT_SUCCESS) {
+    
     return {
       ...state,
       isLoading: false,
       comments: [...state.comments, action.payload],
+      msg: "New comment added" ,
+      showMsg: true
+
     }
   }
   if (action.type === CREATE_COMMENT_ERROR) {
@@ -97,13 +105,18 @@ const reducer = (state, action) => {
     }
   }
 
+  if (action.type === DELETE_COMMENT_SUCCESS) {
+    return { ...state, msg: "The comment is deleted" , isLoadingForTable: false
+  }
+
+  }
   if (action.type === DELETE_COMMENT_ERROR) {
     return {
       ...state,
       isLoading: false,
       showAlert: true,
       msg: action.payload,
-      isLoadingForTable: true,
+      isLoadingForTable: false,
     }
   }
 
@@ -120,6 +133,8 @@ const reducer = (state, action) => {
       isLoading: false,
       editComplete: true,
       editItem: action.payload,
+      isLoadingForTable: false,
+
     }
   }
   if (action.type === EDIT_COMMENT_ERROR) {
@@ -129,7 +144,7 @@ const reducer = (state, action) => {
       editComplete: true,
       showAlert: true,
       msg: action.payload,
-      isLoadingForTable: true
+      isLoadingForTable: false
 
     }
   }
@@ -139,6 +154,7 @@ const reducer = (state, action) => {
     state["page"]["currentPage"] = action.payload
     return {
       ...state,
+      isLoadingForTable: false
   
     }
   }

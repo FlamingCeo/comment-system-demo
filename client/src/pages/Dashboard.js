@@ -12,7 +12,7 @@ function Dashboard() {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  const { isLoading, showAlert, fetchComment, createComment,msg,isLoadingForTable } = useGlobalContext();
+  const { isLoading, showAlert,showMsg, showSuccessAlertMessage,fetchComment, createComment,msg,isLoadingForTable } = useGlobalContext();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -46,14 +46,15 @@ function Dashboard() {
             placeholder='Comment'
           />
           <button type='submit' className='btn' disabled={isLoading}>
-            {isLoading ? 'Adding New Comment...' : 'Add Comment'}
+           Add Comment
           </button>
         </form>
-        {isLoadingForTable&& (
-          <div className='alert alert-danger'>
+        {showMsg&& (
+          <div className='alert alert-primary'>
             {msg}
           </div>
         )}
+
         <Comments />
       </Wrapper>
     </>
