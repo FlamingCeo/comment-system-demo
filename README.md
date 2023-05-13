@@ -24,13 +24,25 @@ npm start
 The frontend will be available at http://localhost:3000.
 
 
-Finally, start the backend server:
-Note: The default port is 5000
+Finally, the backend server:
 ````
 cd serve
+````
+
+In order to spin up the project, in the root create .env with these variables, with your own values.
+
+MONGO_URI
+JWT_SECRET
+JWT_LIFETIME
+PORT
+
+After that run this command
+````
 npm install
 npm start
 ````
+Note: The default port is 5000
+
 
 
 Further Reading
